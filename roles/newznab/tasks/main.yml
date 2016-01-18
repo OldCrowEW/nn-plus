@@ -1,0 +1,114 @@
+---
+- name: Install epel repo
+  yum: name=epel-release state=latest
+
+#Ansible doesnt like yum install these http.
+- name: wget repo rpms
+  get_url: url={{ item }} dest=/tmp/
+  with_items:
+    "{{ repo_rpms_url }}"
+
+- name: Install needed repo rpms
+  yum: name=/tmp/{{ item }} state=present
+  with_items:
+    - "{{ repo_rpms_pkg_rpmforge }}"
+    - "{{ repo_rpms_pkg_dextop }}"
+
+- name: Install needed pkgs
+  yum: name={{ item }} state=latest
+  with_items:
+    "{{ newznab_pkgs }}"
+
+- name: Copy php.ini file
+  copy: src=php.ini dest=/etc/php.ini 
+
+- name: Copy my.cnf file
+  copy: src=my.cnf dest=/etc/my.cnf 
+
+- name: Copy nginx.conf file
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: Checkout newznab+
+  subversion: repo={{ newznab_svn_url }} dest={{ newznab_dir }} username={{ newznab_svn_user }} password={{ newznab_svn_passwd }}
+
+- name: Start and enable services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    "{{ newznab_svcs }}"
+
+- name: update mysql root passwd
+  mysql_user: name=root host={{ item }} password={{ mysql_root_passwd }}
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: copy user my.cnf file with root passwd credentials
+  template: src=my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
+
+##- name: delete anonymous mysql user
+##  mysql_user: name='' state=absent
+
+- name: remove mysql test database
+  mysql_db: name=test state=absent
+
+- name: Create newznab db
+  mysql_db: name=newznab state=present
+
+- name: Import newznab settings.sql
+  raw: "mysql newznab -e \"source /var/www/newznab/db/schema.sql\""
+  ignore_errors: yes
+
+- name: Copy settings.sql
+  template: src=settings.sql.j2 dest=/tmp/settings.sql
+
+- name: Import newznab settings.sql
+  mysql_db: name=newznab state=import target=/tmp/settings.sql
+
+#configure db
+#mysqli_query($cfg->dbConnCheck, "ALTER TABLE binaries ENGINE=InnoDB;");
+#mysqli_query($cfg->dbConnCheck, "ALTER TABLE parts ENGINE=InnoDB;");
+
+- name: Copy newznab config file
+  template: src=config.php.j2 dest={{ newznab_dir_www }}/config.php
+
+- name: Add nginx firewalld entry
+  firewalld: port=80/tcp permanent=true state=enabled immediate=yes
+
+- name: disable selinux lazy way
+  command: setenforce 0
+
+# this is recommended by nn+ maintainers :(
+- name: chmod 777 lazy way
+  file: path={{ newznab_dir }} recurse=yes mode=0777
+
+- name: generate sphinx config
+  command: php {{ newznab_dir_misc_sphinx }}/nnindexer generate
+  ignore_errors: yes
+
+- name: start sphinx daemon
+  command: php {{ newznab_dir_misc_sphinx }}/nnindexer.php daemon
+
+- name: generate sphinx index full all
+  command: php {{ newznab_dir_misc_sphinx }}/nnindexer.php index full all
+
+- name: generate sphinx  index delta all
+  command: php {{ newznab_dir_misc_sphinx }}/nnindexer.php index delta all
+
+- name: stop sphinx daemon
+  command: php {{ newznab_dir_misc_sphinx }}/nnindexer.php daemon --stop
+  ignore_errors: yes
+
+- name: start sphinx daemon now that everything is setup
+  command: php {{ newznab_dir_misc_sphinx }}/nnindexer.php daemon
+  ignore_errors: yes
+
+- name: Copy newznab_screen_job.sh in place
+  template: src=newznab_screen_job.sh.j2 dest={{ newznab_dir_misc_update_scripts}}/nix_scripts/newznab_screen_job.sh mode=0777
+
+- name: Create php5 symlink
+  file: src=/usr/bin/php dest=/usr/bin/php5 state=link
+
+- name: Fire off screen newznab_job
+  command: "screen -S 'newznab' -d -m bash {{ newznab_dir_misc_update_scripts}}/nix_scripts/newznab_screen_job.sh"

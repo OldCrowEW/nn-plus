@@ -1,0 +1,13 @@
+#Doesnt work
+
+use newznab;
+UPDATE users SET username='admin',email='admin@example.com' WHERE username='admin';
+UPDATE users SET username='admin',password='2e7e8d566bef9ded9b56dd42dd033c44630c632bD0Bi' WHERE username='admin';
+UPDATE users SET username='admin',role='2' WHERE username='admin';
+UPDATE users SET username='admin',createddate='2016-01-01 00:00:00' WHERE username='admin';
+UPDATE users SET username='admin',invites='1' WHERE username='admin';
+UPDATE users SET username='admin',movieview='1' WHERE username='admin';
+UPDATE users SET username='admin',userseed='8843192a08ea444943356d2e3c2c45c7' WHERE username='admin';
+
+INSERT INTO users (username, email, password, role, createddate, invites, movieview)
+VALUES ('admin','admin@example.com','2e7e8d566bef9ded9b56dd42dd033c44630c632bD0Bi','2','2016-01-01 00:00:00','1','1');

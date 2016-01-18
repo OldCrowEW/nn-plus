@@ -1,0 +1,52 @@
+newznab_svn_url: svn://svn.newznab.com/nn/branches/nnplus
+newznab_svn_user: 
+newznab_svn_passwd: 
+newznab_dir: /var/www/newznab
+newznab_dir_www: "{{ newznab_dir }}/www"
+#newznab_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+newznab_dir_misc_sphinx: "{{ newznab_dir }}/misc/sphinx"
+newznab_dir_misc_update_scripts: "{{ newznab_dir }}/misc/update_scripts"
+
+mysql_root_passwd: password
+
+nntp_username: 
+nntp_password: 
+nntp_server: 
+nntp_port: 563
+nntp_sslenabled: true
+
+repo_rpms_pkg_rpmforge: rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
+repo_rpms_pkg_dextop: nux-dextop-release-0-5.el7.nux.noarch.rpm
+
+repo_rpms_url:
+  - http://pkgs.repoforge.org/rpmforge-release/{{ repo_rpms_pkg_rpmforge }}
+  - http://li.nux.ro/download/nux/dextop/el7/x86_64/{{ repo_rpms_pkg_dextop }}
+
+newznab_pkgs:
+  - ffmpeg
+  - lame
+  - mediainfo
+  - mariadb
+  - mariadb-server
+  - memcached
+  - MySQL-python
+  - nginx
+  - php 
+  - php-curl
+  - php-fpm
+  - php-gd
+  - php-mysql
+  - php-pear
+  - php-process
+  - screen
+  - sphinx
+  - svn
+  - unrar
+  - unzip
+  - x264
+
+newznab_svcs:
+  - nginx
+  - mariadb
+  - memcached
+  - php-fpm

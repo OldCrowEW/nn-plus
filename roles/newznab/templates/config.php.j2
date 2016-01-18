@@ -1,0 +1,32 @@
+<?php
+
+//=========================
+// Config you must change - updated by installer.
+//=========================
+define('DB_TYPE', 'mysql');
+define('DB_HOST', 'localhost');
+define('DB_PORT', 3306);
+define('DB_USER', 'root');
+define('DB_PASSWORD', '{{ mysql_root_passwd }}');
+define('DB_NAME', 'newznab');
+define('DB_INNODB', true);
+define('DB_PCONNECT', true);
+define('DB_ERRORMODE', PDO::ERRMODE_SILENT);
+
+define('NNTP_USERNAME', '{{ nntp_username }}');
+define('NNTP_PASSWORD', '{{ nntp_password }}');
+define('NNTP_SERVER', '{{ nntp_server }}');
+define('NNTP_PORT', '{{ nntp_port }}');
+define('NNTP_SSLENABLED', {{ nntp_sslenabled }});
+
+define('CACHEOPT_METHOD', 'memcache');
+define('CACHEOPT_TTLFAST', '120');
+define('CACHEOPT_TTLMEDIUM', '600');
+define('CACHEOPT_TTLSLOW', '1800');
+define('CACHEOPT_MEMCACHE_SERVER', '127.0.0.1');
+define('CACHEOPT_MEMCACHE_PORT', '11211');
+
+// define('EXTERNAL_PROXY_IP', ''); //Internal address of public facing server
+// define('EXTERNAL_HOST_NAME', ''); //The external hostname that should be used
+
+require("automated.config.php");

@@ -1,0 +1,18 @@
+use newznab;
+UPDATE site SET setting='newznabID',value='{{ newznab_id }}' WHERE setting='newznabID';
+UPDATE site SET setting='unrarpath',value='/usr/bin/unrar' WHERE setting='unrarpath';
+UPDATE site SET setting='lamepath',value='/usr/bin/lame' WHERE setting='lamepath';
+UPDATE site SET setting='mediainfopath',value='/usr/bin/mediainfo' WHERE setting='mediainfopath';
+UPDATE site SET setting='ffmpegpath',value='/usr/bin/ffmpeg' WHERE setting='ffmpegpath';
+UPDATE site SET setting='tmpunrarpath',value='{{ newznab_dir }}/nzbfiles/tmpunrar' WHERE setting='tmpunrarpath';
+UPDATE site SET setting='sphinxenabled',value='1' WHERE setting='sphinxenabled';
+UPDATE site SET setting='sphinxconfpath',value='/etc/sphinx/sphinx.conf' WHERE setting='sphinxconfpath';
+UPDATE site SET setting='sphinxindexnzbs',value='1' WHERE setting='sphinxindexnzbs';
+UPDATE site SET setting='sphinxindexnfos',value='1' WHERE setting='sphinxindexnfos';
+UPDATE site SET setting='sphinxindexpredb',value='1' WHERE setting='sphinxindexpredb';
+UPDATE site SET setting='sphinxindexreleasefiles',value='1' WHERE setting='sphinxindexreleasefiles';
+UPDATE site SET setting='spotnabdiscover',value='1' WHERE setting='spotnabdiscover';
+UPDATE site SET setting='spotnabautoenable',value='1' WHERE setting='spotnabautoenable';
+UPDATE site SET setting='checkpasswordedrar',value='2' WHERE setting='checkpasswordedrar';
+UPDATE site SET setting='showpasswordedrelease',value='1' WHERE setting='showpasswordedrelease';
+UPDATE site SET setting='nzbpath',value='/var/www/newznab/nzbfiles/' WHERE setting='nzbpath';
