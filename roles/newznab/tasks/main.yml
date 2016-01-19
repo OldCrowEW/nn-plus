@@ -26,7 +26,7 @@
   copy: src=my.cnf dest=/etc/my.cnf 
 
 - name: Copy nginx.conf file
-  copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
 
 - name: Checkout newznab+
   subversion: repo={{ newznab_svn_url }} dest={{ newznab_dir }} username={{ newznab_svn_user }} password={{ newznab_svn_passwd }}
