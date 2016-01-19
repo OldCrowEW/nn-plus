@@ -9,9 +9,9 @@ Now the gotchas:
 
 * turn on the firewall before running. firewalld disabled will cause firewall add to fail.
 
-* No default accounts are created. Go here ( and no further) {{ site_url }}/install/step6.php? to create your account. You will be redirected to {{ site_url }}/install but just go to step6.php again and you'll be g2g. Do not use any of the other steps or the {{ newznab_dir_www }}/config.php will be overwritten. You **MUST** delete {{ newznab_dir_www }}/install when completed or **anyone will be able to create admin accounts**.
+* No default accounts are created. Go here ( and no further) {{ site_url }}/install/step6.php? to create your account. You will be redirected to {{ site_url }}/install but just go to step6.php again and you'll be g2g. Do not use any of the other steps or {{ newznab_dir_www }}/config.php will be overwritten. You **MUST** delete {{ newznab_dir_www }}/install when completed or **anyone will be able to create admin accounts**.
 
-* All the menu pages on the site refer to localhost. This should be fixed.
+* All menu pages on the site refer to {{ site_fqdn }}. Change this if {{ ansible_fqdn }} does not meet your requirements.
 
 
 You must set the following variables under roles/defaults/main.yml
