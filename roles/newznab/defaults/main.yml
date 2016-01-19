@@ -1,3 +1,4 @@
+site_fqdn: {{ ansible_fqdn }}
 newznab_svn_url: svn://svn.newznab.com/nn/branches/nnplus
 newznab_svn_user: 
 newznab_svn_passwd: 
